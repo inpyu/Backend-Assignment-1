@@ -1,6 +1,4 @@
-package com.initcloud.assignment1.room;
-
-import java.util.Date;
+package com.initcloud.assignment1.room.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

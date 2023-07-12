@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import com.initcloud.assignment1.room.Room;
+import com.initcloud.assignment1.room.entity.Room;
 import com.initcloud.assignment1.user.User;
 
 @Entity
