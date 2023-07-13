@@ -13,10 +13,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.initcloud.assignment1.room.entity.Room;
-import com.initcloud.assignment1.user.User;
+import com.initcloud.assignment1.member.Member;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-public class Reserve {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+public class Reservation {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +39,7 @@ public class Reserve {
 	private Room room;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "User")
-	private User user;
+	@JoinColumn(name = "Member")
+	private Member member;
 
 }

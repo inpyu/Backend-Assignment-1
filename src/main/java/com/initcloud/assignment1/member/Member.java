@@ -1,4 +1,4 @@
-package com.initcloud.assignment1.user;
+package com.initcloud.assignment1.member;
 
 import java.util.Date;
 import java.util.List;
@@ -12,10 +12,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
-import com.initcloud.assignment1.reserve.entity.Reserve;
+import com.initcloud.assignment1.reserve.entity.Reservation;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-public class User {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+public class Member {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +31,7 @@ public class User {
 	private Date sumTime;
 
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Reserve")
-	private List<Reserve> reserves;
+	@JoinColumn(name = "Reservation")
+	private List<Reservation> reservations;
 
 }

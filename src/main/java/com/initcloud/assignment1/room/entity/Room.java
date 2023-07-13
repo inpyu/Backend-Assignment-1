@@ -11,9 +11,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import com.initcloud.assignment1.reserve.entity.Reserve;
+import com.initcloud.assignment1.reserve.entity.Reservation;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Room {
 
 	@Id
@@ -28,7 +34,7 @@ public class Room {
 	private Size size;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Reserve")
-	private Reserve reserve;
+	@JoinColumn(name = "Reservation")
+	private Reservation reservation;
 
 }
