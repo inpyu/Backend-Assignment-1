@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import com.initcloud.assignment1.reserve.entity.Reservation;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,5 +37,12 @@ public class Room {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "Reservation")
 	private Reservation reservation;
+
+	@Builder(access = AccessLevel.PROTECTED)
+	public Room(String name, Size size, Reservation reservation){
+		this.name = name;
+		this.size = size;
+		this.reservation = reservation;
+	}
 
 }
