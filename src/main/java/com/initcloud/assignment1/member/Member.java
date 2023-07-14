@@ -2,6 +2,7 @@ package com.initcloud.assignment1.member;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

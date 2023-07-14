@@ -12,10 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.initcloud.assignment1.reserve.dto.ReservationCreateInDTO;
 import com.initcloud.assignment1.room.entity.Room;
 import com.initcloud.assignment1.member.Member;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -41,5 +43,22 @@ public class Reservation {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Member")
 	private Member member;
+
+	@Builder
+	public Reservation (Date startTime, Date endTime, Room room, Member member) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.room = room;
+		this.member = member;
+	}
+
+	public static Reservation create(ReservationCreateInDTO reservationCreateInDTO, Room room, Member member){
+		return Reservation.builder()
+			.startTime(reservationCreateInDTO.getStartTime())
+			.endTime(reservationCreateInDTO.getEndTime())
+			.room(room)
+			.member(member)
+			.build();
+	}
 
 }

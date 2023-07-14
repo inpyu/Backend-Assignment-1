@@ -19,7 +19,8 @@ public enum SuccessStatus {
 	 * Success Code : 200
 	 * OK
 	 */
-	SUCCESS(200,"SUCCESS","요청이 완료 되었습니다.");
+	SUCCESS(200,"SUCCESS","요청이 완료 되었습니다."),
+	CREATE_RESERVATION(200,"SUCCESS","예약이 완료 되었습니다.");
 
 
 	/**
