@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.initcloud.assignment1.reserve.dto.ReservationCreateInDTO;
+import com.initcloud.assignment1.reserve.dto.ReservationUpdateInDTO;
 import com.initcloud.assignment1.room.entity.Room;
 import com.initcloud.assignment1.member.Member;
 
@@ -58,6 +59,14 @@ public class Reservation {
 			.endTime(reservationCreateInDTO.getEndTime())
 			.room(room)
 			.member(member)
+			.build();
+	}
+
+	public static Reservation update(ReservationUpdateInDTO reservationUpdateInDTO, Room room){
+		return Reservation.builder()
+			.startTime(reservationUpdateInDTO.getStartTime())
+			.endTime(reservationUpdateInDTO.getEndTime())
+			.room(room)
 			.build();
 	}
 

@@ -16,6 +16,8 @@ import com.initcloud.assignment1.member.MemberService;
 import com.initcloud.assignment1.reserve.dto.ReservationAllListOutDTO;
 import com.initcloud.assignment1.reserve.dto.ReservationCreateInDTO;
 import com.initcloud.assignment1.reserve.dto.ReservationCreateOutDTO;
+import com.initcloud.assignment1.reserve.dto.ReservationUpdateInDTO;
+import com.initcloud.assignment1.reserve.dto.ReservationUpdateOutDTO;
 import com.initcloud.assignment1.reserve.entity.Reservation;
 import com.initcloud.assignment1.reserve.repository.ReservationRepository;
 import com.initcloud.assignment1.room.dto.RoomAllListOutDTO;
@@ -123,6 +125,68 @@ public class ReservationService {
 
 		return ReservationCreateOutDTO.of(reservation);
 	}
+
+	/**
+	 * 예약 수정
+	 * */
+	public ReservationUpdateOutDTO updateReservation(ReservationUpdateInDTO dto, Member member, Room room) {
+		LocalTime currentTime = LocalTime.now();
+		// 현재 시간이 00시부터 01시 사이인 경우에 예외 발생
+		if (currentTime.isAfter(LocalTime.MIDNIGHT) && currentTime.isBefore(LocalTime.of(1, 0))) {
+			throw new IllegalArgumentException("예약은 00시부터 01시 사이에는 불가능합니다.");
+		}
+
+		// Room의 size 정보 가져오기
+		Size roomSize = room.getSize();
+
+		/**
+		 * 최대 예약 시간 확인 로직
+		 */
+
+		// 예약 가능한 최대 연속 시간 가져오기
+		int maxContinuousHours = getMaxContinuousHoursByRoomSize(roomSize);
+
+		// 예약 생성 가능한지 검사
+		Date startTime = dto.getStartTime();
+		Date endTime = dto.getEndTime();
+
+		// LocalDateTime으로 변환
+		LocalDateTime startDateTime = LocalDateTime.ofInstant(startTime.toInstant(), ZoneId.systemDefault());
+		LocalDateTime endDateTime = LocalDateTime.ofInstant(endTime.toInstant(), ZoneId.systemDefault());
+
+		long hoursBetween = ChronoUnit.HOURS.between(startDateTime, endDateTime);
+		if (hoursBetween > maxContinuousHours) {
+			throw new IllegalArgumentException("해당 회의실은 연속 최대 " + maxContinuousHours + "시간까지 예약할 수 있습니다.");
+		}
+
+		/**
+		 * 하나의 아이디로 최대 6시간 예약 로직 구현
+		 * */
+		long hoursToAdd = hoursBetween;
+		memberService.addReservationTime(member, hoursToAdd);
+
+		/**
+		 * 이미 예약이 있으면 예약 불가능
+		 * */
+
+		boolean isAlreadyReserved = reservationRepository.existsByRoomAndStartTimeBetweenOrEndTimeBetween(
+			room, startDateTime, endDateTime, startDateTime, endDateTime);
+		if (isAlreadyReserved) {
+			throw new IllegalStateException("해당 회의실은 이미 예약된 시간입니다.");
+		}
+
+
+		/**
+		 * 예약 생성
+		 */
+		Reservation reservation = Reservation.update(dto, room);
+		reservationRepository.save(reservation);
+
+		return ReservationUpdateOutDTO.of(reservation);
+	}
+
+
+
 
 	/**
 	 * Room Size별 최대 예약시간 반환 함수

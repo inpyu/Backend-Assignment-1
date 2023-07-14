@@ -24,6 +24,8 @@ import com.initcloud.assignment1.member.Member;
 import com.initcloud.assignment1.reserve.dto.ReservationAllListOutDTO;
 import com.initcloud.assignment1.reserve.dto.ReservationCreateInDTO;
 import com.initcloud.assignment1.reserve.dto.ReservationCreateOutDTO;
+import com.initcloud.assignment1.reserve.dto.ReservationUpdateInDTO;
+import com.initcloud.assignment1.reserve.dto.ReservationUpdateOutDTO;
 import com.initcloud.assignment1.reserve.entity.Reservation;
 import com.initcloud.assignment1.reserve.service.ReservationService;
 import com.initcloud.assignment1.room.dto.RoomListOutDTO;
@@ -73,6 +75,18 @@ public class ReserveController {
 		@Validated @RequestPart Member member){
 		ReservationCreateOutDTO reviewCreateOutDTO = reservationService.createReservation(dto, member, room);
 		return new SuccessResponse<>(CREATE_RESERVATION, reviewCreateOutDTO);
+	}
+
+	/**
+	 * 예약 수정 API
+	 * */
+	@PostMapping
+	public SuccessResponse<ReservationUpdateOutDTO> updateReservation(
+		@Validated @RequestPart ReservationUpdateInDTO dto,
+		@Validated @RequestPart Room room,
+		@Validated @RequestPart Member member){
+		ReservationUpdateOutDTO reviewUpdateOutDTO = reservationService.updateReservation(dto, member, room);
+		return new SuccessResponse<>(UPDATE_RESERVATION, reviewUpdateOutDTO);
 	}
 
 }
