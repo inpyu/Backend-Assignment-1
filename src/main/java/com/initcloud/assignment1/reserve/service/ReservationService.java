@@ -44,4 +44,13 @@ public class ReservationService {
 		List<Reservation> reservations = reservationRepository.findByMemberId(userId);
 		return reservations;
 	}
+
+	/**
+	 * 예약 삭제 API
+	 * */
+
+	public String deleteReservation(Long reservationId) {
+		reservationRepository.deleteById(reservationId);
+		return "리뷰 삭제 완료";
+	}
 }

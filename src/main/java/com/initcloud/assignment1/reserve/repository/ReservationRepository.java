@@ -10,4 +10,6 @@ import com.initcloud.assignment1.reserve.entity.Reservation;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
 	List<Reservation> findByMemberId(Long userId);
+
+	void deleteById(Long id);
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +42,14 @@ public class ReserveController {
 	@GetMapping("/{userId}")
 	public SuccessResponse<List<Reservation>> userReservation(@PathVariable Long userId){
 		return new SuccessResponse<>(SUCCESS, reservationService.getUserReservation(userId));
+	}
+
+	/**
+	 * Reservation Id로 예약을 삭제할 수 있는 API
+	 * */
+	@DeleteMapping("/{reservationId}")
+	public SuccessResponse<String> deleteReservation(@PathVariable Long reservationId){
+		return new SuccessResponse<>(SUCCESS, reservationService.deleteReservation(reservationId));
 	}
 
 
