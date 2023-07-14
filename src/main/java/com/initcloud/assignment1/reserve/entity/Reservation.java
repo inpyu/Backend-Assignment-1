@@ -34,11 +34,11 @@ public class Reservation {
 	@Column(nullable = false)
 	private Date endTime;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Room")
 	private Room room;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Member")
 	private Member member;
 

@@ -36,4 +36,12 @@ public class ReservationService {
 		return reservationLists;
 	}
 
+	/**
+	 * User ID로 예약 정보를 조회할 수 있는 API
+	 * */
+	@Transactional(readOnly = true)
+	public List<Reservation> getUserReservation(Long userId) {
+		List<Reservation> reservations = reservationRepository.findByMemberId(userId);
+		return reservations;
+	}
 }
