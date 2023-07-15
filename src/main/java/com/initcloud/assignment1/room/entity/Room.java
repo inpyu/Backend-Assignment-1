@@ -38,8 +38,9 @@ public class Room {
 	@JoinColumn(name = "Reservation")
 	private Reservation reservation;
 
-	@Builder(access = AccessLevel.PROTECTED)
-	public Room(String name, Size size, Reservation reservation){
+	@Builder
+	public Room(Long id, String name, Size size, Reservation reservation){
+		this.id = id;
 		this.name = name;
 		this.size = size;
 		this.reservation = reservation;
