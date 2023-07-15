@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.initcloud.assignment1.common.SuccessResponse;
+import com.initcloud.assignment1.room.Exception.RoomException;
 import com.initcloud.assignment1.room.dto.RoomAllListOutDTO;
 import com.initcloud.assignment1.room.dto.RoomListOutDTO;
 import com.initcloud.assignment1.room.service.RoomService;
@@ -30,7 +31,7 @@ public class RoomController {
 	 * 회의실 정보 조회
 	 * */
 	@GetMapping("/{roomId}")
-	public SuccessResponse<List<RoomListOutDTO>> detailRoom(@PathVariable Long roomId){
+	public SuccessResponse<List<RoomListOutDTO>> detailRoom(@PathVariable Long roomId) throws RoomException {
 		return new SuccessResponse<>(SUCCESS, roomService.getRoomDetail(roomId));
 	}
 

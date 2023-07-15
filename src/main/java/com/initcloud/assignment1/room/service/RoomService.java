@@ -1,5 +1,7 @@
 package com.initcloud.assignment1.room.service;
 
+import static com.initcloud.assignment1.common.ErrorStatus.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.bytebuddy.asm.Advice;
 
+import com.initcloud.assignment1.room.Exception.RoomException;
 import com.initcloud.assignment1.room.dto.RoomAllListOutDTO;
 import com.initcloud.assignment1.room.dto.RoomListOutDTO;
 import com.initcloud.assignment1.room.entity.Room;
@@ -26,8 +29,9 @@ public class RoomService {
 	 * 회의실 정보를 가져올 수 있는 API
 	 * */
 	@Transactional(readOnly = true)
-	public List<RoomListOutDTO> getRoomDetail(Long roomId){
-		List<Room> findRooms = roomRepository.findAllById(roomId).orElse(null);
+	public List<RoomListOutDTO> getRoomDetail(Long roomId) throws RoomException {
+		List<Room> findRooms = roomRepository.findAllById(roomId)
+			.orElseThrow(() -> new RoomException(NOT_EXIST_ROOM));
 		return RoomListOutDTO.of(findRooms);
 	}
 
