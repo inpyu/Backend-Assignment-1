@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,7 +81,7 @@ public class ReserveController {
 	/**
 	 * 예약 수정 API
 	 * */
-	@PostMapping
+	@PatchMapping
 	public SuccessResponse<ReservationUpdateOutDTO> updateReservation(
 		@Validated @RequestPart ReservationUpdateInDTO dto,
 		@Validated @RequestPart Room room,
