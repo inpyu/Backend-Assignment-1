@@ -65,6 +65,28 @@ public class RoomServiceUnitTest {
 		assertEquals(0, result.size());
 	}
 
-	
+	@Test
+	public void testGetRoomDetail() throws RoomException {
+		// Mock data
+		Long roomId = 1L;
+		List<Room> findRooms = new ArrayList<>();
+
+		Room room = Room.builder()
+			.id(roomId)
+			.name("Room 1")
+			.size(Size.소)
+			.reservation(null)
+			.build();
+		findRooms.add(room);
+
+		// Mock behavior
+		when(roomRepository.findAllById(roomId)).thenReturn(findRooms);
+
+		// Call the service method
+		List<RoomListOutDTO> result = roomService.getRoomDetail(roomId);
+
+		// Assertions
+		assertEquals(0, result.size());
+	}
 
 }
