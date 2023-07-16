@@ -62,7 +62,7 @@ public class RoomServiceUnitTest {
 
 		List<RoomAllListOutDTO> result = roomService.getAllRooms();
 
-		assertEquals(0, result.size());
+		assertEquals(2, result.size());
 	}
 
 	@Test
@@ -86,7 +86,8 @@ public class RoomServiceUnitTest {
 		List<RoomListOutDTO> result = roomService.getRoomDetail(roomId);
 
 		// Assertions
-		assertEquals(0, result.size());
+		assertEquals(1, result.size());
+		assertEquals("Room 1", result.get(0).getName());
 	}
 
 }
