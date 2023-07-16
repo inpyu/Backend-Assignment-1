@@ -4,6 +4,7 @@ import static com.initcloud.assignment1.common.ErrorStatus.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,9 +31,12 @@ public class RoomService {
 	 * */
 	@Transactional(readOnly = true)
 	public List<RoomListOutDTO> getRoomDetail(Long roomId) throws RoomException {
-		List<Room> findRooms = roomRepository.findAllById(roomId)
-			.orElseThrow(() -> new RoomException(NOT_EXIST_ROOM));
-		return RoomListOutDTO.of(findRooms);
+		try{
+			List<Room> findRooms = roomRepository.findAllById(roomId);
+			return RoomListOutDTO.of(findRooms);
+		}catch(NoSuchElementException e){
+			throw new RoomException(NOT_EXIST_ROOM);
+		}
 	}
 
 	/**

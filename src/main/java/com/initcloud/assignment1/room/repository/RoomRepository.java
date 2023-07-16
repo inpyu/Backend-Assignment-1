@@ -11,5 +11,5 @@ import com.initcloud.assignment1.room.entity.Room;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Integer> {
 
-	Optional<List<Room>>  findAllById(Long roomId);
+	List<Room>  findAllById(Long roomId);
 }
