@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,11 +92,7 @@ public class ReservationService {
 		Date startTime = dto.getStartTime();
 		Date endTime = dto.getEndTime();
 
-		// LocalDateTime으로 변환
-		LocalDateTime startDateTime = LocalDateTime.ofInstant(startTime.toInstant(), ZoneId.systemDefault());
-		LocalDateTime endDateTime = LocalDateTime.ofInstant(endTime.toInstant(), ZoneId.systemDefault());
-
-		long hoursBetween = ChronoUnit.HOURS.between(startDateTime, endDateTime);
+		long hoursBetween = TimeUnit.MILLISECONDS.toHours(endTime.getTime() - startTime.getTime());
 		if (hoursBetween > maxContinuousHours) {
 			throw new IllegalArgumentException("해당 회의실은 연속 최대 " + maxContinuousHours + "시간까지 예약할 수 있습니다.");
 		}
@@ -108,10 +105,9 @@ public class ReservationService {
 
 		/**
 		 * 이미 예약이 있으면 예약 불가능
-		 * */
-
+		 **/
 		boolean isAlreadyReserved = reservationRepository.existsByRoomAndStartTimeBetweenOrEndTimeBetween(
-			room, startDateTime, endDateTime, startDateTime, endDateTime);
+			room, startTime, endTime, startTime, endTime);
 		if (isAlreadyReserved) {
 			throw new IllegalStateException("해당 회의실은 이미 예약된 시간입니다.");
 		}
@@ -166,15 +162,13 @@ public class ReservationService {
 		memberService.addReservationTime(member, hoursToAdd);
 
 		/**
-		 * 이미 예약이 있으면 예약 불가능
-		 * */
-
+		 * 이미 예약이 있으면 예약 불가능d
+		 **/
 		boolean isAlreadyReserved = reservationRepository.existsByRoomAndStartTimeBetweenOrEndTimeBetween(
-			room, startDateTime, endDateTime, startDateTime, endDateTime);
+			room, startTime, endTime, startTime, endTime);
 		if (isAlreadyReserved) {
 			throw new IllegalStateException("해당 회의실은 이미 예약된 시간입니다.");
 		}
-
 
 		/**
 		 * 예약 생성

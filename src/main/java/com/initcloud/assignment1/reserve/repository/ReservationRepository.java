@@ -1,6 +1,7 @@
 package com.initcloud.assignment1.reserve.repository;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +16,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
 	void deleteById(Long id);
 
-	boolean existsByRoomAndStartTimeBetweenOrEndTimeBetween(Room room, LocalDateTime startDateTime, LocalDateTime endDateTime, LocalDateTime startDateTime1, LocalDateTime endDateTime1);
+	boolean existsByRoomAndStartTimeBetweenOrEndTimeBetween(Room room, Date startDateTime, Date endDateTime, Date startDateTime1, Date endDateTime1);
 }
