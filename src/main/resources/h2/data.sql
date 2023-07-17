@@ -6,10 +6,10 @@ VALUES ('Room 1', '소'),
 
 -- Member 더미 데이터 삽입
 INSERT INTO Member (sum_time)
-VALUES ('2023-07-13 00:00:00'),
-       ('2023-07-13 00:00:00'),
-       ('2023-07-14 00:00:00'),
-       ('2023-07-14 00:00:00');
+VALUES (0),
+       (0),
+       (0),
+       (0);
 
 -- Reservation 더미 데이터 삽입
 INSERT INTO Reservation (start_time, end_time, room, member)
