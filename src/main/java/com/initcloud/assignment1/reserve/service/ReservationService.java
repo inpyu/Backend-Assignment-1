@@ -1,5 +1,7 @@
 package com.initcloud.assignment1.reserve.service;
 
+import static com.initcloud.assignment1.common.ErrorStatus.*;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -20,6 +22,7 @@ import com.initcloud.assignment1.reserve.dto.ReservationCreateOutDTO;
 import com.initcloud.assignment1.reserve.dto.ReservationUpdateInDTO;
 import com.initcloud.assignment1.reserve.dto.ReservationUpdateOutDTO;
 import com.initcloud.assignment1.reserve.entity.Reservation;
+import com.initcloud.assignment1.reserve.exception.ReserveException;
 import com.initcloud.assignment1.reserve.repository.ReservationRepository;
 import com.initcloud.assignment1.room.dto.RoomAllListOutDTO;
 import com.initcloud.assignment1.room.entity.Room;
@@ -71,7 +74,8 @@ public class ReservationService {
 	/**
 	 * 예약 생성 API
 	 * */
-	public ReservationCreateOutDTO createReservation(ReservationCreateInDTO dto, Member member, Room room) {
+	public ReservationCreateOutDTO createReservation(ReservationCreateInDTO dto, Member member, Room room)
+	throws ReserveException {
 		LocalTime currentTime = LocalTime.now();
 		// 현재 시간이 00시부터 01시 사이인 경우에 예외 발생
 		if (currentTime.isAfter(LocalTime.MIDNIGHT) && currentTime.isBefore(LocalTime.of(1, 0))) {
@@ -94,7 +98,7 @@ public class ReservationService {
 
 		long hoursBetween = TimeUnit.MILLISECONDS.toHours(endTime.getTime() - startTime.getTime());
 		if (hoursBetween > maxContinuousHours) {
-			throw new IllegalArgumentException("해당 회의실은 연속 최대 " + maxContinuousHours + "시간까지 예약할 수 있습니다.");
+			throw new ReserveException(MAX_ROOM_TIME_ERROR);
 		}
 
 		/**
@@ -109,7 +113,7 @@ public class ReservationService {
 		boolean isAlreadyReserved = reservationRepository.existsByRoomAndStartTimeBetweenOrEndTimeBetween(
 			room, startTime, endTime, startTime, endTime);
 		if (isAlreadyReserved) {
-			throw new IllegalStateException("해당 회의실은 이미 예약된 시간입니다.");
+			throw new ReserveException(DUPLICATED_TIME);
 		}
 
 

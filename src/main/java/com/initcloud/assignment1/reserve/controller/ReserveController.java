@@ -28,6 +28,7 @@ import com.initcloud.assignment1.reserve.dto.ReservationCreateOutDTO;
 import com.initcloud.assignment1.reserve.dto.ReservationUpdateInDTO;
 import com.initcloud.assignment1.reserve.dto.ReservationUpdateOutDTO;
 import com.initcloud.assignment1.reserve.entity.Reservation;
+import com.initcloud.assignment1.reserve.exception.ReserveException;
 import com.initcloud.assignment1.reserve.service.ReservationService;
 import com.initcloud.assignment1.room.dto.RoomListOutDTO;
 import com.initcloud.assignment1.room.entity.Room;
@@ -73,7 +74,7 @@ public class ReserveController {
 	public SuccessResponse<ReservationCreateOutDTO> createReservation(
 		@Validated @RequestPart ReservationCreateInDTO dto,
 		@Validated @RequestPart Room room,
-		@Validated @RequestPart Member member){
+		@Validated @RequestPart Member member) throws ReserveException {
 		ReservationCreateOutDTO reviewCreateOutDTO = reservationService.createReservation(dto, member, room);
 		return new SuccessResponse<>(CREATE_RESERVATION, reviewCreateOutDTO);
 	}
