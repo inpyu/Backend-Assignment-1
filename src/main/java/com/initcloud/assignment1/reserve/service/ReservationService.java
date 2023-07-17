@@ -129,7 +129,8 @@ public class ReservationService {
 	/**
 	 * 예약 수정
 	 * */
-	public ReservationUpdateOutDTO updateReservation(ReservationUpdateInDTO dto, Member member, Room room) {
+	public ReservationUpdateOutDTO updateReservation(ReservationUpdateInDTO dto, Member member, Room room) throws
+		ReserveException {
 		LocalTime currentTime = LocalTime.now();
 		// 현재 시간이 00시부터 01시 사이인 경우에 예외 발생
 		if (currentTime.isAfter(LocalTime.MIDNIGHT) && currentTime.isBefore(LocalTime.of(1, 0))) {
@@ -150,13 +151,9 @@ public class ReservationService {
 		Date startTime = dto.getStartTime();
 		Date endTime = dto.getEndTime();
 
-		// LocalDateTime으로 변환
-		LocalDateTime startDateTime = LocalDateTime.ofInstant(startTime.toInstant(), ZoneId.systemDefault());
-		LocalDateTime endDateTime = LocalDateTime.ofInstant(endTime.toInstant(), ZoneId.systemDefault());
-
-		long hoursBetween = ChronoUnit.HOURS.between(startDateTime, endDateTime);
+		long hoursBetween = TimeUnit.MILLISECONDS.toHours(endTime.getTime() - startTime.getTime());
 		if (hoursBetween > maxContinuousHours) {
-			throw new IllegalArgumentException("해당 회의실은 연속 최대 " + maxContinuousHours + "시간까지 예약할 수 있습니다.");
+			throw new ReserveException(MAX_ROOM_TIME_ERROR);
 		}
 
 		/**
@@ -166,12 +163,12 @@ public class ReservationService {
 		memberService.addReservationTime(member, hoursToAdd);
 
 		/**
-		 * 이미 예약이 있으면 예약 불가능d
+		 * 이미 예약이 있으면 예약 불가능
 		 **/
 		boolean isAlreadyReserved = reservationRepository.existsByRoomAndStartTimeBetweenOrEndTimeBetween(
 			room, startTime, endTime, startTime, endTime);
 		if (isAlreadyReserved) {
-			throw new IllegalStateException("해당 회의실은 이미 예약된 시간입니다.");
+			throw new ReserveException(DUPLICATED_TIME);
 		}
 
 		/**

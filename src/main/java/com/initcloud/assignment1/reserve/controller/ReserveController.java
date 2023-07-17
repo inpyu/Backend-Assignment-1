@@ -86,7 +86,7 @@ public class ReserveController {
 	public SuccessResponse<ReservationUpdateOutDTO> updateReservation(
 		@Validated @RequestPart ReservationUpdateInDTO dto,
 		@Validated @RequestPart Room room,
-		@Validated @RequestPart Member member){
+		@Validated @RequestPart Member member) throws ReserveException {
 		ReservationUpdateOutDTO reviewUpdateOutDTO = reservationService.updateReservation(dto, member, room);
 		return new SuccessResponse<>(UPDATE_RESERVATION, reviewUpdateOutDTO);
 	}
