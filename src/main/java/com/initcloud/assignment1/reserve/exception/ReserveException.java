@@ -9,4 +9,5 @@ import lombok.Getter;
 @Getter
 public class ReserveException extends Exception {
 	private ErrorStatus error;
+
 }
