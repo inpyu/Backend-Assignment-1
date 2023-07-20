@@ -12,8 +12,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.initcloud.assignment1.room.Exception.RoomException;
 import com.initcloud.assignment1.room.dto.RoomAllListOutDTO;
@@ -22,20 +28,14 @@ import com.initcloud.assignment1.room.entity.Room;
 import com.initcloud.assignment1.room.entity.Size;
 import com.initcloud.assignment1.room.repository.RoomRepository;
 import com.initcloud.assignment1.room.service.RoomService;
-
 @SpringBootTest
 public class RoomServiceUnitTest {
 
-	@Mock
+	@MockBean
 	private RoomRepository roomRepository;
 
-	@InjectMocks
+	@Autowired
 	private RoomService roomService;
-
-	@BeforeEach
-	public void setup() {
-		MockitoAnnotations.openMocks(this);
-	}
 
 	@Test
 	public void testGetAllRooms() {
@@ -88,6 +88,8 @@ public class RoomServiceUnitTest {
 		// Assertions
 		assertEquals(1, result.size());
 		assertEquals("Room 1", result.get(0).getName());
+		assertEquals(Size.소, result.get(0).getSize());
+
 	}
 
 }
