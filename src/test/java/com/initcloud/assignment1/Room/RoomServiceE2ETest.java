@@ -19,10 +19,16 @@ public class RoomServiceE2ETest {
 
 	@Test
 	public void testGetAllRooms() throws Exception {
-		mockMvc.perform(get("/rooms")
+		mockMvc.perform(get("/rooms/all")
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$").isArray());
+			.andExpect(jsonPath("$.data").isArray())
+			.andExpect(jsonPath("$.data[0].id").value(1))
+			.andExpect(jsonPath("$.data[0].name").value("Room 1"))
+			.andExpect(jsonPath("$.data[1].id").value(2))
+			.andExpect(jsonPath("$.data[1].name").value("Room 2"))
+			.andExpect(jsonPath("$.data[2].id").value(3))
+			.andExpect(jsonPath("$.data[2].name").value("Room 3"));
 	}
 
 	@Test
@@ -33,7 +39,10 @@ public class RoomServiceE2ETest {
 		mockMvc.perform(get("/rooms/{roomId}", roomId)
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$").isArray());
+			.andExpect(jsonPath("$.data").isArray())
+			.andExpect(jsonPath("$.data[0].id").value(1))
+			.andExpect(jsonPath("$.data[0].name").value("Room 1"))
+			.andExpect(jsonPath("$.data[0].size").value("소"));
 	}
 
 }
