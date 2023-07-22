@@ -38,12 +38,6 @@ public class ReservationServiceUnitTest {
 	@MockBean
 	private ReservationRepository reservationRepository;
 
-	// Mock 객체를 초기화합니다.
-	@BeforeEach
-	public void setup() {
-		MockitoAnnotations.openMocks(this);
-	}
-
 	@Test
 	public void testGetAllReservations() {
 		// Mock 데이터 생성
